@@ -270,7 +270,14 @@ def answer_question(question: str) -> Any:
         return len(count_rows)
 
     if is_average:
-        if is_product or is_customer or "order value" in ql or "order amount" in ql:
+        # Average order value questions may use "worth", "in USD", or
+        # "dollars" instead of the literal phrase "order value".
+        if (
+            is_product or is_customer
+            or "order" in ql or "worth" in ql
+            or "dollar" in ql or "usd" in ql
+            or "order value" in ql or "order amount" in ql
+        ):
             amounts = [ledger.usd(r) for r in paid_rows]
             return money(sum(amounts, Decimal("0")) / len(amounts)) if amounts else 0
         if "quantity" in ql or "units" in ql:
