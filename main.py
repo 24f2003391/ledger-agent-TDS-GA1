@@ -255,7 +255,8 @@ def answer_question(question: str) -> Any:
 
     # Respect explicit "paid orders only" wording for counts as well as totals.
     explicit_paid_only = bool(re.search(
-        r"\\b(?:paid orders? only|only paid orders?|paid only|paid-only)\\b", ql
+        r"\\b(?:paid\\s+orders?\\s+only|only\\s+paid\\s+orders?|paid\\s+only|paid-only|paid\\s+orders?)\\b",
+        ql,
     ))
     count_rows = paid_rows if explicit_paid_only else rows
 
