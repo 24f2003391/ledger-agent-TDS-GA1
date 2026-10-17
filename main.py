@@ -129,7 +129,7 @@ def health() -> dict[str, Any]:
         "service": "Acme Appliances Ledger Agent",
         "status": "ready" if ledger.loaded else "not_ready",
         "orders_loaded": len(ledger.orders),
-        "message": "POST JSON {\\"question\\": \\"...\\"} to this URL.",
+        "message": 'POST JSON {"question": "..."} to this URL.',
     }
 
 @app.get("/health")
