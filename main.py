@@ -260,12 +260,14 @@ def answer_question(question: str) -> Any:
     ))
     count_rows = paid_rows if explicit_paid_only else rows
 
-    if is_count and is_order_count:
-        return len(count_rows)
+    # Resolve the entity being counted before checking whether the wording
+    # contains "order". Customer-count questions often say "placed ... order".
     if is_count and is_customer:
         return len({str(r.get("customer")) for r in count_rows if r.get("customer")})
     if is_count and is_product:
         return len({str(r.get("product")) for r in count_rows if r.get("product")})
+    if is_count and is_order_count:
+        return len(count_rows)
 
     if is_average:
         if is_product or is_customer or "order value" in ql or "order amount" in ql:
