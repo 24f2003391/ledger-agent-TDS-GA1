@@ -253,12 +253,18 @@ def answer_question(question: str) -> Any:
             grouped_c[str(row.get("customer", "Unknown"))] += ledger.usd(row)
         return max(grouped_c, key=grouped_c.get) if grouped_c else ""
 
+    # Respect explicit "paid orders only" wording for counts as well as totals.
+    explicit_paid_only = bool(re.search(
+        r"\\b(?:paid orders? only|only paid orders?|paid only|paid-only)\\b", ql
+    ))
+    count_rows = paid_rows if explicit_paid_only else rows
+
     if is_count and is_order_count:
-        return len(rows)
+        return len(count_rows)
     if is_count and is_customer:
-        return len({str(r.get("customer")) for r in rows if r.get("customer")})
+        return len({str(r.get("customer")) for r in count_rows if r.get("customer")})
     if is_count and is_product:
-        return len({str(r.get("product")) for r in rows if r.get("product")})
+        return len({str(r.get("product")) for r in count_rows if r.get("product")})
 
     if is_average:
         if is_product or is_customer or "order value" in ql or "order amount" in ql:
