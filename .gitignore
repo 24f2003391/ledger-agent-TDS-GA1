@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+api_response.json
+orders_response.json
+rates_response.json
+export_response.json
+*.py[cod]
